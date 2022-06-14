@@ -10,10 +10,10 @@ class sandbox {
 		this.tilesToRedraw = new Set()
 	}
 
-	initSand(sand){
+	initSand(sand, initialHeight = 125){
 		for(let x = 0; x < sand.length; x++){
 			for(let y = 0; y < sand[x].length; y++){
-				this.sand[x][y] = x+y
+				this.sand[x][y] = initialHeight
 			}
 		}
 	}
@@ -39,8 +39,24 @@ class sandbox {
 		this.c.fillRect(x*this.tileSize, y*this.tileSize, this.tileSize, this.tileSize)
 	}
 
-	changeHeight(x, y, newHeight){
-		this.sand[x][y] = newHeight
-		this.tilesToRedraw.add([x,y])
+	setHeight(x, y, newHeight){
+		if(x >= 0 && x < this.sand.length){
+			if(y >= 0 && y < this.sand[x].length){
+				this.sand[x][y] = newHeight
+				this.tilesToRedraw.add([x,y])
+			}
+		}
+	}
+
+	//adds a delta to the height of the cell
+	addToHeight(x, y, delta){
+		if(x >= 0 && x < this.sand.length){
+			if(y >= 0 && y < this.sand[x].length){
+				let newHeight = this.sand[x][y] + delta
+				if(newHeight < 0){ newHeight = 0 }
+				this.sand[x][y] = newHeight
+				this.tilesToRedraw.add([x,y])
+			}
+		}
 	}
 }
